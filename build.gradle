@@ -1,0 +1,37 @@
+plugins {
+    id 'eclipse'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+}
+
+version = '0.2.0'
+group = 'com.luki.iteminspector'
+archivesBaseName = 'LukiItemInspector'
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+repositories {
+    mavenCentral()
+}
+
+minecraft {
+    mappings channel: 'official', version: '1.20.1'
+    runs {
+        configureEach {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            mods { lukiiteminspector { source sourceSets.main } }
+        }
+        client {}
+        server {}
+    }
+}
+
+dependencies { minecraft 'net.minecraftforge:forge:1.20.1-47.4.2' }
+
+jar {
+    finalizedBy 'reobfJar'
+    manifest { attributes(['Specification-Title': 'Luki Item Inspector', 'Specification-Vendor': 'Luki', 'Specification-Version': '1', 'Implementation-Title': project.name, 'Implementation-Version': project.jar.archiveVersion]) }
+}
